@@ -119,7 +119,7 @@ public class JAIIIOServiceImpl extends AbstractService
           options.numDecompositionLevels.intValue());
     }
     writer.write(null, iioImage, param);
-    ios.close();
+    mcios.close();
   }
 
   /**
