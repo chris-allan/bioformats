@@ -37,6 +37,7 @@ import javax.imageio.spi.IIORegistry;
 import javax.imageio.spi.ServiceRegistry;
 import javax.imageio.stream.ImageOutputStream;
 import javax.imageio.stream.MemoryCacheImageInputStream;
+import javax.imageio.stream.MemoryCacheImageOutputStream;
 
 import loci.common.services.AbstractService;
 import loci.common.services.ServiceException;
@@ -86,7 +87,7 @@ public class JAIIIOServiceImpl extends AbstractService
   public void writeImage(OutputStream out, BufferedImage img,
       JPEG2000CodecOptions options) throws IOException, ServiceException
   {
-    MemoryCacheImageInputStream mciis = new MemoryCacheImageInputStream(in);
+    MemoryCacheImageOutputStream mcios = new MemoryCacheImageOutputStream(out);
 
     IIORegistry registry = IIORegistry.getDefaultInstance();
     Iterator<J2KImageWriterSpi> iter = 
@@ -95,7 +96,7 @@ public class JAIIIOServiceImpl extends AbstractService
     J2KImageWriterSpi spi =
       registry.getServiceProviderByClass(J2KImageWriterSpi.class);
     J2KImageWriter writer = new J2KImageWriter(spi);
-    writer.setOutput(mciis);
+    writer.setOutput(mcios);
 
     String filter = options.lossless ? J2KImageWriteParam.FILTER_53 :
       J2KImageWriteParam.FILTER_97;
