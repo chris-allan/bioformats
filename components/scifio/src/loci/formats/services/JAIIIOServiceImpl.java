@@ -86,7 +86,7 @@ public class JAIIIOServiceImpl extends AbstractService
   public void writeImage(OutputStream out, BufferedImage img,
       JPEG2000CodecOptions options) throws IOException, ServiceException
   {
-    ImageOutputStream ios = ImageIO.createImageOutputStream(out);
+    MemoryCacheImageInputStream mciis = new MemoryCacheImageInputStream(in);
 
     IIORegistry registry = IIORegistry.getDefaultInstance();
     Iterator<J2KImageWriterSpi> iter = 
@@ -95,7 +95,7 @@ public class JAIIIOServiceImpl extends AbstractService
     J2KImageWriterSpi spi =
       registry.getServiceProviderByClass(J2KImageWriterSpi.class);
     J2KImageWriter writer = new J2KImageWriter(spi);
-    writer.setOutput(ios);
+    writer.setOutput(mciis);
 
     String filter = options.lossless ? J2KImageWriteParam.FILTER_53 :
       J2KImageWriteParam.FILTER_97;
