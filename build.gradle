@@ -7,3 +7,21 @@ task assemble(dependsOn: ['jars', 'tools']) {
 
 task check(dependsOn: 'test') {
 }
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    junit
+}
+
+dependencies{
+    junit 'ant-contrib:ant-contrib:20020829'
+    junit 'org.apache.ant:ant-junit:1.8.1'
+}
+
+ClassLoader antClassLoader = org.apache.tools.ant.Project.class.classLoader
+configurations.junit.each { File f ->
+    antClassLoader.addURL(f.toURI().toURL())
+}
